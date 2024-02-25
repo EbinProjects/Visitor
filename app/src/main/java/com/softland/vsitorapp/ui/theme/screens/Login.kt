@@ -260,30 +260,34 @@ fun LoginContent(
 
         Button(
             onClick = {
-                if (state==ConnectionState.Available){
-                    viewModel.collectEntryPersonsData(ConstantsValue.BASE_URL)
-                    if (sharedPreferences.getBoolean("UserLogin",false)){
-                        onNavigateToHome.popBackStack()
-                        onNavigateToHome.navigate(Screenes.homeScreen.route)
+
+
+                when {
+                    email.value.text.isEmpty() -> {
+                        emptyEmailError.value = true
                     }
 
-                }else{
-                    Toast.makeText(context,"No Internet!",Toast.LENGTH_SHORT).show()
-                }
+                    password.value.text.isEmpty() -> {
+                        emptyPasswordError.value = true
+                    }
 
-//                when {
-//                    email.value.text.isEmpty() -> {
-//                        emptyEmailError.value = true
-//                    }
-//
-//                    password.value.text.isEmpty() -> {
-//                        emptyPasswordError.value = true
-//                    }
-//
-//                    else -> {
-//                        onNavigateToHome.navigate(Screenes.homeScreen.route)
-//                    }
-//                }
+                    else -> {
+                        if (state==ConnectionState.Available){
+                            viewModel.collectEntryPersonsData(ConstantsValue.BASE_URL)
+                            if (sharedPreferences.getBoolean("UserLogin",false)){
+                                onNavigateToHome.popBackStack()
+                                onNavigateToHome.navigate(Screenes.homeScreen.route)
+                            }
+                            Toast.makeText(context,"Api no work!Api Domain is not hosted publicly",Toast.LENGTH_SHORT).show()
+                            sharedPreferences.edit().putBoolean("UserLogin",true).apply()
+                            onNavigateToHome.popBackStack()
+                            onNavigateToHome.navigate(Screenes.homeScreen.route)
+
+                        }else{
+                            Toast.makeText(context,"No Internet!",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             },
             content = {
                 Text(text = "Log In", color = Color.White)
