@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">VSITORAPP</string>
+    <string name="title_activity_second_main">SecondMainActivity</string>
+    <string name="version">Version:1.0.0</string>
+</resources>
